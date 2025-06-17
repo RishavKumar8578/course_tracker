@@ -14,7 +14,7 @@ const About = () => {
     desc3: `Add personal notes or reflections to remember key takeaways or bookmark important lessons.`,
     title4:`Time Efficiency : `,
     desc4: `Avoid wasting time revisiting completed or irrelevant content by marking progress.`,
-    title5:`Goal Tracking :span`,
+    title5:`Goal Tracking :`,
     desc5: `Stay aligned with your learning goals by monitoring how many resources you've completed over time.`,
     actionButton: {
       title: "Download CV",
