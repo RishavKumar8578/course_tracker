@@ -26,6 +26,12 @@ const Notes = () => {
     }
   };
 
+  const handleDelete = () => {
+    localStorage.removeItem("myNote");
+    setNote("");
+    alert("Note deleted successfully!");
+  };
+
   return (
     <div className="min-h-screen px-4 py-20 bg-gray-100">
       <h2 className="text-3xl font-bold text-center mb-6">My Notes</h2>
@@ -51,6 +57,13 @@ const Notes = () => {
           className="px-6 py-2 bg-orange-500 text-white rounded-full shadow hover:bg-orange-600 transition"
         >
           View Note
+        </button>
+
+        <button
+          onClick={handleDelete}
+          className="px-6 py-2 bg-orange-500 text-white rounded-full shadow hover:bg-red-600 transition"
+        >
+          Delete Note
         </button>
       </div>
     </div>
