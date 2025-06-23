@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 // Replace this with your deployed Spring Boot backend URL
-const BASE_URL = "https://your-backend-server.com/api/notes";
+const BASE_URL = "https://localhost:8080/api/notes";
 
 const Notes = () => {
   const [note, setNote] = useState("");
