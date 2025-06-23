@@ -1,35 +1,66 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+// Replace this with your deployed Spring Boot backend URL
+const BASE_URL = "https://your-backend-server.com/api/notes";
 
 const Notes = () => {
   const [note, setNote] = useState("");
+  const [noteId, setNoteId] = useState(null);
 
-  // Load saved note from localStorage when the component mounts
+  // Load note from backend on initial render
   useEffect(() => {
-    const savedNote = localStorage.getItem("myNote");
-    if (savedNote) {
-      setNote(savedNote);
-    }
+    axios.get(BASE_URL)
+      .then((res) => {
+        if (res.data.length > 0) {
+          const savedNote = res.data[0];
+          setNote(savedNote.content);
+          setNoteId(savedNote.id);
+        }
+      })
+      .catch((err) => console.error("Error fetching note:", err));
   }, []);
 
+  // Save note to backend
   const handleSave = () => {
-    localStorage.setItem("myNote", note);
-    alert("Note saved successfully!");
+    axios.post(BASE_URL, { content: note })
+      .then((res) => {
+        setNoteId(res.data.id);
+        alert("Note saved successfully!");
+      })
+      .catch((err) => console.error("Error saving note:", err));
   };
 
+  // View (reload) saved note
   const handleViewSaved = () => {
-    const savedNote = localStorage.getItem("myNote");
-    if (savedNote) {
-      setNote(savedNote);
-      alert("Note loaded successfully!");
-    } else {
-      alert("No saved note found.");
-    }
+    axios.get(BASE_URL)
+      .then((res) => {
+        if (res.data.length > 0) {
+          const savedNote = res.data[0];
+          setNote(savedNote.content);
+          setNoteId(savedNote.id);
+          alert("Note loaded successfully!");
+        } else {
+          alert("No saved note found.");
+        }
+      })
+      .catch((err) => console.error("Error viewing note:", err));
   };
 
+  // Delete note
   const handleDelete = () => {
-    localStorage.removeItem("myNote");
-    setNote("");
-    alert("Note deleted successfully!");
+    if (!noteId) {
+      alert("No note to delete.");
+      return;
+    }
+
+    axios.delete(`${BASE_URL}/${noteId}`)
+      .then(() => {
+        setNote("");
+        setNoteId(null);
+        alert("Note deleted successfully!");
+      })
+      .catch((err) => console.error("Error deleting note:", err));
   };
 
   return (
